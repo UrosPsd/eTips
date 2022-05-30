@@ -1,19 +1,32 @@
 package com.etips.models;
 
 import com.etips.models.enums.ClubDefense;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 public class Club implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String name;
+    @Column
     private String city;
+    @OneToMany(mappedBy = "opposingClub",cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.TRUE)
     private List<Game> gamesPlayed;
+    @Column(name = "average_points_received")
     private float averagePointsReceived;
+    @Column(name = "club_defense")
+    @Enumerated(EnumType.STRING)
     private ClubDefense clubDefense;
 
     public Club() {
@@ -73,6 +86,14 @@ public class Club implements Serializable {
 
     public ClubDefense getClubDefense() {
         return clubDefense;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setClubDefense(ClubDefense clubDefense) {

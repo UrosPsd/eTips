@@ -16,17 +16,17 @@ public class InputStateService  {
     private final KieContainer kieContainer;
 
     @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
     private ClubRepository clubRepository;
 
+    @Autowired
+    private PlayerRepository playerRepository;
+
     public Player findByNameAndSurname(String name, String surname) {
-        return playerRepository.findByNameAndSurname(name, surname);
+        return playerRepository.findOneByNameAndSurname(name, surname);
     }
 
     public Club findByName(String name) {
-        return clubRepository.findByName(name);
+        return clubRepository.findOneByName(name);
     }
 
     @Autowired

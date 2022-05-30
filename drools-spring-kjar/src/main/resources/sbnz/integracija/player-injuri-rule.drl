@@ -1,18 +1,24 @@
 package com.etips;
 
 import com.etips.models.Player;
+import com.etips.models.InputState;
+import com.etips.models.Game;
+import java.time.LocalDateTime;
 
 rule "Player was injured"
-	agenda-group "player-injury"
 	when
-		$i: InputState( $p = player, $games = player.gamesPlayed )
-		Number(gamesMissed >= 2) from accumulate(
+		$i: InputState( $p: player, $games: player.gamesPlayed )
+		$player: Player( name == $p.name, surname == $p.surname )
+		Number(intValue >= 2) from accumulate(
 			Game(
-				$dateMonth: date, $dateMonth.isAfter(LocalDate.now().minusDays(10)),
+				$dateMonth: date,
+				$dateMonth.isAfter(LocalDateTime.now().minusDays(10)),
 				played == false
 			) from $games,
-			count()
+			init(int count = 0;),
+			action(count += 1;),
+			result(count)
 		)
 	then
-		modify($p) { setInjury( true ) }
+		modify($player) { setInjury( true ); }
 end

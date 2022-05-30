@@ -2,32 +2,51 @@ package com.etips.models;
 
 import com.etips.models.enums.CourtType;
 import com.etips.models.enums.SeasonPart;
+import org.apache.tomcat.jni.Local;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+@Entity
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    @Column(name = "date_played")
+    private LocalDateTime date;
+    @ManyToOne
+    @JoinColumn(name = "player_id",insertable = false,updatable = false)
     private Player player;
+    @Column
     private boolean played;
+    @Column
     private int points;
+    @ManyToOne
+    @JoinColumn(name = "opposing_club_id",insertable = false,updatable = false)
     private Club opposingClub;
+    @Column(name = "court_type")
+    @Enumerated(EnumType.STRING)
     private CourtType courtType;
+    @Column(name = "season_part")
+    @Enumerated(EnumType.STRING)
     private SeasonPart seasonPart;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "score_id")
     private Score score;
 
     public Game() {
     }
 
-    public Game(Date date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
+    public Game(LocalDateTime date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
         this(null, date, player, played, points, opposingClub, courtType, seasonPart, score);
     }
 
-    public Game(Long id, Date date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
+    public Game(Long id, LocalDateTime date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
         this.id = id;
         this.date = date;
         this.player = player;
@@ -39,11 +58,19 @@ public class Game implements Serializable {
         this.score = score;
     }
 
-    public Date getDate() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

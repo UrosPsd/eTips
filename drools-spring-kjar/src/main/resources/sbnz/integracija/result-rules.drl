@@ -1,45 +1,49 @@
 package com.etips;
 
 import com.etips.models.Player;
+import com.etips.models.InputState;
+import com.etips.models.Game;
+import com.etips.models.enums.ClubDefense;
+import com.etips.models.enums.CourtType;
+import com.etips.models.enums.PlayerForm;
+import com.etips.models.enums.SeasonPart;
 
 rule ""
 	when
-		$i: InputState( $player = player, $games = player.gamesPlayed, $opposingClub = opposingClub, $averagePointsBet = averagePointsBet, $sp = seasonPart )
+		$i: InputState( $player: player, $games: player.gamesPlayed, $opposingClub: opposingClub, $averagePointsBet: averagePointsBet, $sp: seasonPart )
 		accumulate (
 			Game(
 				$opposingClub == opposingClub,
 				$sp == SeasonPart.REGULAR,
 				points > $averagePointsBet
 			) from $games,
-			$averageAgainstClub = count()
+			$averageAgainstClub: count()
 		)
-		eval($games.size() = $averageAgainstClub)
+		eval($games.size() == $averageAgainstClub)
 	then
 		System.out.println("Siguran plus");
 end
 
-rule "PLUS"
-	salience (  )
+rule ""
 	when
 		$i: InputState(
-			$pointsBet = averagePointsBet,
-			player.playerForm == PlayerForm.IN_FORM,
-			opposingClub.clubDefense ==  BAD_DEFENSE,
-			courtType == CourtType.HOME_COURT
+			$pointsBet: averagePointsBet,
+			player.playerForm == PlayerForm.EXTREMELY_OUT_OF_FORM,
+			opposingClub.clubDefense ==  ClubDefense.EXCELENT_DEFENSE,
+			courtType == CourtType.AWAY_COURT
 		)
 	then
-		
+		System.out.println("Siguran minus");
 end
 
-rule "PLUS"
-	salience (  )
+rule ""
 	when
 		$i: InputState(
-			$pointsBet = averagePointsBet,
+			$pointsBet: averagePointsBet,
 			player.playerForm == PlayerForm.IN_FORM,
-			opposingClub.clubDefense ==  BAD_DEFENSE,
+			opposingClub.clubDefense ==  ClubDefense.BAD_DEFENSE,
 			courtType == CourtType.HOME_COURT
 		)
 	then
-		
+		System.out.println("Lagani plus");
 end

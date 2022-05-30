@@ -1,21 +1,38 @@
 package com.etips.models;
 
 import com.etips.models.enums.PlayerForm;
+import jdk.jfr.Enabled;
+import org.apache.maven.repository.internal.SnapshotMetadataGeneratorFactory;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.security.PrivilegedAction;
 import java.util.List;
 
+@Entity
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String name;
+    @Column
     private String surname;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "club_id")
     private Club club;
+    @Column
     private boolean injury;
+    @OneToMany(mappedBy = "player",cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.TRUE)
     private List<Game> gamesPlayed;
+    @Column(name = "player_form")
+    @Enumerated(EnumType.STRING)
     private PlayerForm playerForm;
 
     public Player() {
@@ -33,6 +50,14 @@ public class Player implements Serializable {
         this.gamesPlayed = gamesPlayed;
         this.injury = false;
         this.playerForm = PlayerForm.NA;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

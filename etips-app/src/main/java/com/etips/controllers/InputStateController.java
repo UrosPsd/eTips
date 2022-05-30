@@ -6,7 +6,7 @@ import com.etips.models.Player;
 import com.etips.models.enums.CourtType;
 import com.etips.models.enums.SeasonPart;
 import com.etips.services.InputStateService;
-import org.apache.tools.ant.taskdefs.Input;
+import com.etips.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +35,6 @@ public class InputStateController {
 
         InputState ist = inputStateService.getResult(inputState);
 
-        return ist;
+        return null;
     }
 }
