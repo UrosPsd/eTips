@@ -1,0 +1,53 @@
+package com.etips;
+
+import com.etips.models.Club;
+import com.etips.models.Game;
+import com.etips.model.enums.ClubDefense;
+
+rule "Classify Teams Defense - GOOD_DEFENSE"
+	agenda-group "team-defense"
+    when
+    	$i: InputState( $club = opposingClub, $games = opposingClub.gamesPlayed )
+        $ga: Game()
+        accumulate(
+        	Game($g: this, $pointsReceived: score.pointsReceived) from $games and
+        	Game( $scores: score.pointsReceived ) from $ga,
+        	$averagePointsReceived: average($pointsReceived),
+        	$averagePointsReceivedAll: average($scores)
+        )
+        eval( $averagePointsReceived >  $averagePointsReceivedAll)
+    then
+        modify($club) { setClubDefense( ClubDefense.GOOD_DEFENSE ) }
+end
+
+rule "Classify Teams Defense - BAD_DEFENSE"
+	agenda-group "team-defense"
+    when
+        $i: InputState( $club = opposingClub, $games = opposingClub.gamesPlayed )
+        $ga: Game()
+        accumulate(
+        	Game($g: this, $pointsReceived: score.pointsReceived) from $games and
+        	Game( $scores: score.pointsReceived ) from $ga,
+        	$averagePointsReceived: average($pointsReceived),
+        	$averagePointsReceivedAll: average($scores)
+        )
+        eval( $averagePointsReceived >  $averagePointsReceivedAll)
+    then
+        modify($club) { setClubDefense( ClubDefense.BAD_DEFENSE ) }
+end
+
+rule "Classify Teams Defense - BETTER_DEFENSE"
+	when
+		$i: InputState( $seasonPart: seasonPart )
+		$c: Club( $i.player.club.clubDefense == ClubDefense.BAD_DEFENSE, $seasonPart == SeasonPart.PLAYOFF)
+	then
+		modify($c) { setClubDefense( ClubDefense.GOOD_DEFENSE ) }
+end
+
+rule "Classify Teams Defense - EXCELENT_DEFENSE"
+	when
+		$i: InputState( $seasonPart: seasonPart )
+		$c: Club( $i.player.club.clubDefense == ClubDefense.GOOD_DEFENSE, $seasonPart == SeasonPart.PLAYOFF)
+	then
+		modify($c) { setClubDefense( ClubDefense.EXCELENT_DEFENSE ) }
+end

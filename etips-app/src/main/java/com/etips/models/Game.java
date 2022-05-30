@@ -3,8 +3,17 @@ package com.etips.models;
 import com.etips.models.enums.CourtType;
 import com.etips.models.enums.SeasonPart;
 
-public class Game {
+import java.io.Serializable;
+import java.util.Date;
+
+public class Game implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+    private Date date;
     private Player player;
+    private boolean played;
     private int points;
     private Club opposingClub;
     private CourtType courtType;
@@ -14,8 +23,15 @@ public class Game {
     public Game() {
     }
 
-    public Game(Player player, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
+    public Game(Date date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
+        this(null, date, player, played, points, opposingClub, courtType, seasonPart, score);
+    }
+
+    public Game(Long id, Date date, Player player, boolean played, int points, Club opposingClub, CourtType courtType, SeasonPart seasonPart, Score score) {
+        this.id = id;
+        this.date = date;
         this.player = player;
+        this.played = played;
         this.points = points;
         this.opposingClub = opposingClub;
         this.courtType = courtType;
@@ -23,17 +39,27 @@ public class Game {
         this.score = score;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Date getDate() {
+        return date;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public int getPoints() {
-        return points;
+    public Player getPlayer() { return player; }
+
+    public void setPlayer(Player player) { this.player = player; }
+
+    public boolean isPlayed() {
+        return played;
     }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
+    }
+
+    public int getPoints() { return points; }
 
     public void setPoints(int points) {
         this.points = points;

@@ -1,0 +1,18 @@
+package com.etips;
+
+import com.etips.models.Player;
+
+rule "Player was injured"
+	agenda-group "player-injury"
+	when
+		$i: InputState( $p = player, $games = player.gamesPlayed )
+		Number(gamesMissed >= 2) from accumulate(
+			Game(
+				$dateMonth: date, $dateMonth.isAfter(LocalDate.now().minusDays(10)),
+				played == false
+			) from $games,
+			count()
+		)
+	then
+		modify($p) { setInjury( true ) }
+end

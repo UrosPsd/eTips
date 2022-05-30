@@ -1,24 +1,38 @@
 package com.etips.models;
 
+import com.etips.models.enums.PlayerForm;
+
+import java.io.Serializable;
+import java.security.PrivilegedAction;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
     private String name;
     private String surname;
     private Club club;
     private boolean injury;
     private List<Game> gamesPlayed;
+    private PlayerForm playerForm;
 
     public Player() {
     }
 
-    public Player(String name, String surname, Club club, boolean injury, List<Game> gamesPlayed) {
+    public Player(String name, String surname, Club club, boolean injury) {
+        this(null, name, surname, club, injury);
+    }
+
+    public Player(Long id, String name, String surname, Club club, boolean injury) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.club = club;
         this.injury = injury;
-        this.gamesPlayed = gamesPlayed;
+        this.playerForm = PlayerForm.NA;
+//        this.gamesPlayed = gamesPlayed;
     }
 
     public String getName() {
@@ -59,5 +73,13 @@ public class Player {
 
     public void setGamesPlayed(List<Game> gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public PlayerForm getPlayerForm() {
+        return playerForm;
+    }
+
+    public void setPlayerForm(PlayerForm playerForm) {
+        this.playerForm = playerForm;
     }
 }

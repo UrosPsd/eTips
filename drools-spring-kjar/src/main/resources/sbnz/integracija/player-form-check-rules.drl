@@ -1,0 +1,48 @@
+package com.etips;
+
+import com.etips.models.Player;
+import com.etips.models.Game;
+import com.etips.model.enums.PlayerForm;
+import java.time.LocalDate;
+
+rule "Classify Player Form - In Form"
+    when
+    	$i: InputState( $p = player, $games = $p.gamesPlayed )
+        accumulate(
+        	Game($gMont: this, $dateMonth: date, $dateMonth.isAfter(LocalDate.now().minusMonths(1)), $pointsMonth = points) from $games and
+        	Game($g: this, $points = points) from $games,
+        	$averageMonth: average($pointsMonth),
+        	$average: average($points)
+        )
+        eval($averageMont >= $average)
+    then
+    	modify($p) { setPlayerForm( PlayerForm.IN_FORM ) }
+end
+
+rule "Classify Player Form - Out of Form"
+    when
+        $i: InputState( $p = player, $games = $p.gamesPlayed )
+        accumulate(
+        	Game($gMont: this, $dateMonth: date, $dateMonth.isAfter(LocalDate.now().minusMonths(1)), $pointsMonth = points) from $games and
+        	Game($g: this, $points = points) from $games,
+        	$averageMonth: average($pointsMonth),
+        	$average: average($points)
+        )
+        eval($averageMont < $average)
+    then
+    	modify($p) { setPlayerForm( PlayerForm.OUT_OF_FORM ) }
+end
+
+rule "Classify Player Form - Out of Form and Injury"
+	when
+		$i: InputState( $p: player, $p.playerForm == PlayerForm.OUT_OF_FORM, $p.injury == true )
+	then
+		modify($p) { PlayerForm.EXTREMELY_OUT_OF_FORM }
+end
+
+rule "Classify Player Form - In Form and Injury"
+	when
+		$i: InputState( $p: player, $p.playerForm == PlayerForm.IN_FORM, $p.injury == true )
+	then
+		modify($p) { PlayerForm.BAD_FORM }
+end

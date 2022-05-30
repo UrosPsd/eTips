@@ -1,0 +1,13 @@
+package com.etips;
+
+import com.etips.models.Player;
+
+rule "PLUS"
+	when
+		$i: InputState(
+			player.playerForm == PlayerForm,
+			opposingClub.clubDefense ==  BAD_DEFENSE
+		)
+	then
+
+end
