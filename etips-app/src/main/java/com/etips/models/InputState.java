@@ -61,4 +61,15 @@ public class InputState {
     public void setAveragePointsBet(float averagePointsBet) {
         this.averagePointsBet = averagePointsBet;
     }
+
+    @Override
+    public String toString() {
+        return "InputState{" +
+                "player=" + player +
+                ", opposingClub=" + opposingClub +
+                ", courtType=" + courtType +
+                ", seasonPart=" + seasonPart +
+                ", averagePointsBet=" + averagePointsBet +
+                '}';
+    }
 }
