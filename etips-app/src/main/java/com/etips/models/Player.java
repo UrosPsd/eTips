@@ -21,18 +21,18 @@ public class Player implements Serializable {
     public Player() {
     }
 
-    public Player(String name, String surname, Club club, boolean injury) {
-        this(null, name, surname, club, injury);
+    public Player(String name, String surname, Club club, List<Game> gamesPlayed) {
+        this(null, name, surname, club, gamesPlayed);
     }
 
-    public Player(Long id, String name, String surname, Club club, boolean injury) {
+    public Player(Long id, String name, String surname, Club club, List<Game> gamesPlayed) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.club = club;
-        this.injury = injury;
+        this.gamesPlayed = gamesPlayed;
+        this.injury = false;
         this.playerForm = PlayerForm.NA;
-//        this.gamesPlayed = gamesPlayed;
     }
 
     public String getName() {
