@@ -1,0 +1,52 @@
+package com.etips;
+
+import com.etips.models.Player;
+import com.etips.models.InputState;
+import com.etips.models.Game;
+import com.etips.models.enums.ClubDefense;
+import com.etips.models.enums.CourtType;
+import com.etips.models.enums.PlayerForm;
+import com.etips.models.enums.SeasonPart;
+import com.etips.models.enums.HandicapValue;
+import com.etips.models.InputChampions;
+import com.etips.models.HandicapInput;
+import java.util.ArrayList;
+
+
+rule "Calculate Offense Rating"
+	when
+		$i: HandicapInput( $c1: club1, $c2: club2, $games: games )
+		accumulate(
+			Game( $p1: score.pointsScored, $r1: score.pointsReceived, $c1 == opposingClub) from $games and
+			Game( $p2: score.pointsScored, $r2: score.pointsReceived, $c2 == opposingClub) from $games,
+			$ppg1: average( $p1 ),
+			$rpg1: average( $r1 ),
+			$ppg2: average( $p2 ),
+			$rpg2: average( $r1 )
+		)
+	then
+		System.out.println("Hello " + $ppg1 + " " + $rpg1);
+		modify($i) { setOffRating1($ppg1 - $rpg1); }
+		modify($i) { setOffRating2($ppg2 - $rpg2); }
+end
+
+rule "Calculate Value"
+	when
+		$i: HandicapInput( $or1: offRating1, $or2: offRating2, 0 != offRating1, 0 != offRating2 )
+	then
+		modify($i) { setValue( $or1 - $or2 ); }
+end
+
+rule "Check Hendicap H1"
+	when
+		$i: HandicapInput( value != 0, $v: value, $h: handicap, handicapValue == HandicapValue.NA,  $v > $h )
+	then
+		modify($i) { setHandicapValue( HandicapValue.H1 ); }
+end
+
+rule "Check Hendicap H2"
+	when
+		$i: HandicapInput( value != 0, $v: value, $h: handicap, handicapValue == HandicapValue.NA,  $v <= $h )
+	then
+		modify($i) { setHandicapValue( HandicapValue.H2 ); }
+end
