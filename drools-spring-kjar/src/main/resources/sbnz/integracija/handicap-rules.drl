@@ -8,7 +8,6 @@ import com.etips.models.enums.CourtType;
 import com.etips.models.enums.PlayerForm;
 import com.etips.models.enums.SeasonPart;
 import com.etips.models.enums.HandicapValue;
-import com.etips.models.InputChampions;
 import com.etips.models.HandicapInput;
 import java.util.ArrayList;
 
