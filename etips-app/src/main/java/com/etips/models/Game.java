@@ -2,6 +2,7 @@ package com.etips.models;
 
 import com.etips.models.enums.CourtType;
 import com.etips.models.enums.SeasonPart;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Game implements Serializable {
     private Long id;
     @Column(name = "date_played")
     private LocalDateTime date;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "player_id",insertable = false,updatable = false)
     private Player player;
@@ -26,6 +28,7 @@ public class Game implements Serializable {
     private boolean played;
     @Column
     private int points;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "opposing_club_id",insertable = false,updatable = false)
     private Club opposingClub;
@@ -122,5 +125,20 @@ public class Game implements Serializable {
 
     public void setScore(Score score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", date=" + date +
+                ", player=" + player +
+                ", played=" + played +
+                ", points=" + points +
+                ", opposingClub=" + opposingClub +
+                ", courtType=" + courtType +
+                ", seasonPart=" + seasonPart +
+                ", score=" + score +
+                '}';
     }
 }

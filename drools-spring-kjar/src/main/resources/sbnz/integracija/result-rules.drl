@@ -8,7 +8,7 @@ import com.etips.models.enums.CourtType;
 import com.etips.models.enums.PlayerForm;
 import com.etips.models.enums.SeasonPart;
 
-rule ""
+rule "rule-one"
 	when
 		$i: InputState( $player: player, $games: player.gamesPlayed, $opposingClub: opposingClub, $averagePointsBet: averagePointsBet, $sp: seasonPart )
 		accumulate (
@@ -24,7 +24,7 @@ rule ""
 		System.out.println("Siguran plus");
 end
 
-rule ""
+rule "rule-two"
 	when
 		$i: InputState(
 			$pointsBet: averagePointsBet,
@@ -36,7 +36,7 @@ rule ""
 		System.out.println("Siguran minus");
 end
 
-rule ""
+rule "rule3"
 	when
 		$i: InputState(
 			$pointsBet: averagePointsBet,
