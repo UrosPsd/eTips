@@ -4,21 +4,19 @@ import com.etips.models.Player;
 import com.etips.models.InputState;
 import com.etips.models.Game;
 import java.time.LocalDateTime;
+import java.util.List;
 
 rule "Player was injured"
 	when
-		$i: InputState( $p: player, $games: player.gamesPlayed )
-		$player: Player( name == $p.name, surname == $p.surname )
+		$i: InputState( formCalculated == false, $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
 		Number(intValue >= 2) from accumulate(
 			Game(
-				$dateMonth: date,
-				$dateMonth.isAfter(LocalDateTime.now().minusDays(10)),
+				date.isAfter(LocalDateTime.now().minusDays(10)),
 				played == false
 			) from $games,
-			init(int count = 0;),
-			action(count += 1;),
-			result(count)
+			count()
 		)
 	then
-		modify($player) { setInjury( true ); }
+		System.out.println($name + " " + $surname + " is injured.");
+		modify($i) { setPlayerInjury(true); }
 end

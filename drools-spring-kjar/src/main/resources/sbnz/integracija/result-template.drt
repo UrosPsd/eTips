@@ -1,0 +1,23 @@
+template header
+resState
+formBool
+form
+opDeff
+court
+result
+
+package com.etips;
+
+import com.etips.models.InputState;
+
+template "get-result"
+
+rule "Get result_@{row.rowNumber}"
+no-loop true
+when
+	$i: InputState($pointsBet: averagePointsBet, resultState == @{resState}, formCalculated == @{formBool}, player.playerForm == @{form}, opposingClub.clubDefense ==  @{opDeff}, courtType == @{court} )
+then
+	modify($i) { setResultState(@{result}); };
+end
+
+end template

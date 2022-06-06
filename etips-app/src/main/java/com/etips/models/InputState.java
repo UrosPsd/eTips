@@ -1,6 +1,8 @@
 package com.etips.models;
 
 import com.etips.models.enums.CourtType;
+import com.etips.models.enums.PlayerForm;
+import com.etips.models.enums.ResultState;
 import com.etips.models.enums.SeasonPart;
 
 public class InputState {
@@ -10,6 +12,8 @@ public class InputState {
     private CourtType courtType;
     private SeasonPart seasonPart;
     private float averagePointsBet;
+    private boolean formCalculated;
+    private ResultState resultState;
 
     public InputState() {
     }
@@ -20,6 +24,32 @@ public class InputState {
         this.courtType = courtType;
         this.seasonPart = seasonPart;
         this.averagePointsBet = averagePointsBet;
+        this.formCalculated = false;
+        this.resultState = ResultState.NA;
+    }
+
+    public ResultState getResultState() {
+        return resultState;
+    }
+
+    public void setResultState(ResultState resultState) {
+        this.resultState = resultState;
+    }
+
+    public boolean isFormCalculated() {
+        return formCalculated;
+    }
+
+    public void setFormCalculated(boolean formCalculated) {
+        this.formCalculated = formCalculated;
+    }
+
+    public void setPlayerInjury(boolean injury) {
+        this.player.setInjury(injury);
+    }
+
+    public void setPlayerForm(PlayerForm playerForm) {
+        this.player.setPlayerForm(playerForm);
     }
 
     public Player getPlayer() {
@@ -70,6 +100,7 @@ public class InputState {
                 ", courtType=" + courtType +
                 ", seasonPart=" + seasonPart +
                 ", averagePointsBet=" + averagePointsBet +
+                ", formCalculated=" + formCalculated +
                 '}';
     }
 }

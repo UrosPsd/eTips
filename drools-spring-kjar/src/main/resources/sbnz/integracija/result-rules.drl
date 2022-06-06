@@ -7,6 +7,7 @@ import com.etips.models.enums.ClubDefense;
 import com.etips.models.enums.CourtType;
 import com.etips.models.enums.PlayerForm;
 import com.etips.models.enums.SeasonPart;
+import com.etips.models.enums.ResultState;
 
 rule "rule-one"
 	when
@@ -22,11 +23,14 @@ rule "rule-one"
 		eval($games.size() == $averageAgainstClub)
 	then
 		System.out.println("Siguran plus");
+		modify($i) { setResultState(ResultState.PLUS); }
 end
 
 rule "rule-two"
 	when
 		$i: InputState(
+			resultState == ResultState.NA,
+			formCalculated == true,
 			$pointsBet: averagePointsBet,
 			player.playerForm == PlayerForm.EXTREMELY_OUT_OF_FORM,
 			opposingClub.clubDefense ==  ClubDefense.EXCELENT_DEFENSE,
@@ -34,11 +38,14 @@ rule "rule-two"
 		)
 	then
 		System.out.println("Siguran minus");
+		modify($i) { setResultState(ResultState.MINUS); }
 end
 
 rule "rule3"
 	when
 		$i: InputState(
+			resultState == ResultState.NA,
+			formCalculated == true,
 			$pointsBet: averagePointsBet,
 			player.playerForm == PlayerForm.IN_FORM,
 			opposingClub.clubDefense ==  ClubDefense.BAD_DEFENSE,
@@ -46,4 +53,5 @@ rule "rule3"
 		)
 	then
 		System.out.println("Lagani plus");
+		modify($i) { setResultState(ResultState.PLUS); }
 end
