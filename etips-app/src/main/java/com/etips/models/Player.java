@@ -5,6 +5,7 @@ import jdk.jfr.Enabled;
 import org.apache.maven.repository.internal.SnapshotMetadataGeneratorFactory;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.kie.api.definition.type.Position;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,8 +21,10 @@ public class Player implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
+    @Position(0)
     private String name;
     @Column
+    @Position(1)
     private String surname;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "club_id")

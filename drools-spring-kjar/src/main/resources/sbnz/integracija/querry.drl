@@ -1,0 +1,33 @@
+//created on: Jun 6, 2022
+package com.etips
+
+//list any import classes here.
+import com.etips.models.Game;
+import com.etips.models.Player;
+import com.etips.models.Club;
+
+
+
+//declare any global variables here
+
+
+
+
+rule "average points forall"
+
+    when
+        String(this=="average")
+        AveragePoints(name, surname, club, $avg;)
+    then
+        System.out.println(name + " " + surname + " vs club " + club + " has average of " + $avg);
+
+end
+
+query AveragePoints(String name, String surname, String clubName, Double $avg)
+	$p: Player(name, surname;)
+	$c: Club(clubName;)
+	accumulate(
+		Game($points: points, player == $p, opposingClub == $c),
+		$avg:= average($points)
+	)
+end

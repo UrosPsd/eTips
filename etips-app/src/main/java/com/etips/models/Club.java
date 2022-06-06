@@ -3,6 +3,7 @@ package com.etips.models;
 import com.etips.models.enums.ClubDefense;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.kie.api.definition.type.Position;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +18,11 @@ public class Club implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
+    @Position(0)
     private String name;
     @Column
     private String city;
-    @OneToMany(mappedBy = "opposingClub",cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.TRUE)
+    @OneToMany(mappedBy = "opposingClub",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Game> gamesPlayed;
     @Column(name = "average_points_received")
     private float averagePointsReceived;
