@@ -1,0 +1,82 @@
+//created on: Jun 1, 2022
+package com.etips
+
+import com.etips.models.ChampionsInput;
+import com.etips.models.Game;
+import com.etips.models.Club;
+import com.etips.models.OffRating;
+import com.etips.models.Player;
+import com.etips.models.PlayerOffRating;
+
+
+
+rule "club offrating"
+
+    when
+        $i: ChampionsInput()
+        $c: Club($games: gamesPlayed, gamesPlayed.size()>0)
+        accumulate(
+        	Game( $ps: score.pointsScored, $pr: score.pointsReceived) from $games;
+        			$avgPS: average($ps),
+        			$avgPR: average($pr))
+        
+    then
+        insert (new OffRating($c, $avgPS-$avgPR));
+
+end
+
+rule "player offrating"
+
+    when
+        $i: ChampionsInput()
+        $p: Player($games: gamesPlayed, gamesPlayed.size()>0)
+        accumulate(
+        	Game( $ps: points) from $games;
+        			$avgPS: average($ps))
+        
+    then
+        insert (new PlayerOffRating($p, $avgPS));
+
+end
+
+rule "maxClub"
+    //include attributes such as "salience" here...
+    salience -100
+    when
+    	$i: ChampionsInput()
+        OffRating($c: club, $a: average)
+        not OffRating (average > $a)
+    then
+        System.out.println("Club "+$c.getName()+" has max rating!!!");
+        modify($i) { setBestClub($c) }
+
+end
+
+rule "maxPlayer"
+    //include attributes such as "salience" here...
+    salience -100
+    when
+    	$i: ChampionsInput()
+        PlayerOffRating($p: player, $a: average)
+        not PlayerOffRating (average > $a)
+    then
+        System.out.println("Player "+$p.getName()+" has max rating!!!");
+        modify($i) { setBestPlayer($p) }
+
+end
+
+rule "winner same"
+	salience -200
+	when
+		$i: ChampionsInput($c:bestClub, bestPlayer != null, bestClub == bestPlayer.club)
+	then
+		System.out.println("Club " + $c.getName() + " will win!!!");	
+end
+
+rule "winner final"
+	salience -200
+	when
+		$i: ChampionsInput($c:bestClub, bestPlayer != null, bestClub != bestPlayer.club)
+	then
+		System.out.println("Club " + $c.getName() + " will be in final!!!");	
+end
