@@ -3,55 +3,57 @@ package com.etips;
 import com.etips.models.InputState;
 import com.etips.models.Club;
 import com.etips.models.Game;
+import com.etips.models.GamesHelper;
 import com.etips.models.enums.ClubDefense;
 import com.etips.models.enums.SeasonPart;
+import java.util.List;
 
 rule "Classify Teams Defense - GOOD_DEFENSE"
-	agenda-group "team-defense"
     when
-    	$i: InputState( $club: opposingClub, $games: opposingClub.gamesPlayed )
-    	$c: Club( name == $club.name )
-        $ga: Game()
+    	$i: InputState( $club: opposingClub, $games: opposingClub.gamesPlayed, resultState == ResultState.NA )
+    	$c: Club( id == $club.getId() )
+        $g: GamesHelper( $ga: allGames )
         accumulate(
-        	Game($g: this, $pointsReceived: score.pointsReceived) from $games and
+        	Game($pointsReceived: score.pointsReceived) from $games and
         	Game( $scores: score.pointsReceived ) from $ga,
         	$averagePointsReceived: average($pointsReceived),
         	$averagePointsReceivedAll: average($scores)
         )
         eval( $averagePointsReceived <  $averagePointsReceivedAll )
     then
+    	System.out.println("HERE");
         modify($c) { setClubDefense( ClubDefense.GOOD_DEFENSE ); }
 end
 
 rule "Classify Teams Defense - BAD_DEFENSE"
-	agenda-group "team-defense"
     when
         $i: InputState( $club: opposingClub, $games: opposingClub.gamesPlayed )
         $c: Club( name == $club.name )
-        $ga: Game()
+        $g: GamesHelper( $ga: allGames )
         accumulate(
-        	Game($g: this, $pointsReceived: score.pointsReceived) from $games and
+        	Game($pointsReceived: score.pointsReceived) from $games and
         	Game( $scores: score.pointsReceived ) from $ga,
         	$averagePointsReceived: average($pointsReceived),
         	$averagePointsReceivedAll: average($scores)
         )
-        eval( $averagePointsReceived >=  $averagePointsReceivedAll)
+        eval( $averagePointsReceived >=  $averagePointsReceivedAll )
     then
+    	System.out.println("LOSA");
         modify($c) { setClubDefense( ClubDefense.BAD_DEFENSE ); }
 end
 
 rule "Classify Teams Defense - BETTER_DEFENSE"
 	when
-		$i: InputState( $seasonPart: seasonPart )
-		$c: Club( $i.player.club.clubDefense == ClubDefense.BAD_DEFENSE, $seasonPart == SeasonPart.PLAYOFF)
+		$i: InputState( seasonPart == SeasonPart.PLAYOFF, $clb: opposingClub )
+		$c: Club( id == $clb.getId(), clubDefense == ClubDefense.BAD_DEFENSE )
 	then
 		modify($c) { setClubDefense( ClubDefense.GOOD_DEFENSE ); }
 end
 
 rule "Classify Teams Defense - EXCELENT_DEFENSE"
 	when
-		$i: InputState( $seasonPart: seasonPart )
-		$c: Club( $i.player.club.clubDefense == ClubDefense.GOOD_DEFENSE, $seasonPart == SeasonPart.PLAYOFF)
+		$i: InputState( seasonPart == SeasonPart.PLAYOFF, $clb: opposingClub )
+		$c: Club( id == $clb.getId(), clubDefense == ClubDefense.GOOD_DEFENSE )
 	then
 		modify($c) { setClubDefense( ClubDefense.EXCELENT_DEFENSE ); }
 end

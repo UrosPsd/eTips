@@ -28,6 +28,8 @@ public class InputState {
         this.resultState = ResultState.NA;
     }
 
+
+
     public ResultState getResultState() {
         return resultState;
     }

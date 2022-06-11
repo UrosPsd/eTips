@@ -1,23 +1,33 @@
 template header
 resState
 formBool
-form
-opDeff
-court
-result
+playerForm
+clubDefense
+courtType
+resultState
 
 package com.etips;
 
 import com.etips.models.InputState;
+import com.etips.models.Club;
+import com.etips.models.Player;
+import com.etips.models.enums.ClubDefense;
+import com.etips.models.enums.CourtType;
+import com.etips.models.enums.PlayerForm;
+import com.etips.models.enums.SeasonPart;
+import com.etips.models.enums.ResultState;
 
 template "get-result"
 
 rule "Get result_@{row.rowNumber}"
-no-loop true
+salience -200
 when
-	$i: InputState($pointsBet: averagePointsBet, resultState == @{resState}, formCalculated == @{formBool}, player.playerForm == @{form}, opposingClub.clubDefense ==  @{opDeff}, courtType == @{court} )
+	$i: InputState( $pointsBet: averagePointsBet, $pl: player, resultState == ResultState.@{resState}, $c: opposingClub, courtType == CourtType.@{courtType} )
+	$cl: Club( id == $c.getId(), clubDefense == ClubDefense.@{clubDefense} )
+	$p: Player( id == $pl.getId(), playerForm == PlayerForm.@{playerForm} )
 then
-	modify($i) { setResultState(@{result}); };
+	System.out.println("Template proso");
+	modify($i) { setResultState(ResultState.@{resultState}); };
 end
 
 end template

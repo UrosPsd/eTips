@@ -48,6 +48,8 @@ public class TemplateService {
         String drl = converter.compile(data, template);
 
         KieSession ksession = createKieSessionFromDRL(drl);
+
+        ksession.fireAllRules();
     }
 
     private KieSession createKieSessionFromDRL(String drl) {

@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 rule "Classify Player Form - In Form"
     when
-    	$i: InputState( formCalculated == false, $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
+    	$i: InputState( resultState == ResultState.NA, $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
+    	$pl: Player( id == $p.getId() )
         accumulate(
         	Game($gMont: this, date.isAfter(LocalDateTime.now().minusMonths(1)), $pointsMonth: points) from $games and
         	Game($g: this, $points: points) from $games,
@@ -19,12 +20,13 @@ rule "Classify Player Form - In Form"
         eval($averageMonth >= $average)
     then
     	System.out.println($name + " " + $surname + " is in form");
-    	modify($i) { setPlayerForm( PlayerForm.IN_FORM ); }
+    	modify($pl) { setPlayerForm( PlayerForm.IN_FORM ); }
 end
 
 rule "Classify Player Form - Out of Form"
     when
-        $i: InputState( formCalculated == false, $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
+        $i: InputState( $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
+        $pl: Player( id == $p.getId() )
         accumulate(
         	Game($gMont: this, date.isAfter(LocalDateTime.now().minusMonths(1)), $pointsMonth: points) from $games and
         	Game($g: this, $points: points) from $games,
@@ -34,23 +36,25 @@ rule "Classify Player Form - Out of Form"
         eval($averageMonth < $average)
     then
     	System.out.println($name + " " + $surname + " is out of form");
-    	modify($i) { setPlayerForm( PlayerForm.OUT_OF_FORM ); }
+    	modify($pl) { setPlayerForm( PlayerForm.OUT_OF_FORM ); }
 end
 
-rule "Classify Player Form - Out of Form and Injury"
+rule "Classify Player Form Out of Form and Injury"
+	no-loop true
 	when
-		$i: InputState( formCalculated == false, $p: player, player.playerForm == PlayerForm.OUT_OF_FORM, player.injury == true, $name: player.name, $surname: player.surname )
+		$i: InputState( $p: player )
+		$pl: Player( id == $p.getId(), $name: name, $surname: surname, $pf: playerForm, $pf == PlayerForm.OUT_OF_FORM, injury == true )
 	then
 		System.out.println($name + " " + $surname + " is extremely out form");
-		modify($i) { setPlayerForm( PlayerForm.EXTREMELY_OUT_OF_FORM ); }
-		modify($i) { setFormCalculated( true ); }
+		modify($pl) { setPlayerForm( PlayerForm.EXTREMELY_OUT_OF_FORM ); }
 end
 
 rule "Classify Player Form - In Form and Injury"
+	no-loop true
 	when
-		$i: InputState( formCalculated == false, $p: player, player.playerForm == PlayerForm.IN_FORM, player.injury == true, $name: player.name, $surname: player.surname )
+		$i: InputState( $p: player )
+		$pl: Player( id == $p.getId(), $name: name, $surname: surname, $pf: playerForm, $pf == PlayerForm.IN_FORM, injury == true )
 	then
-		System.out.println($name + " " + $surname + " is out of form");
-		modify($i) { setPlayerForm( PlayerForm.OUT_OF_FORM ); }
-		modify($i) { setFormCalculated( true ); }
+		System.out.println($name + " " + $surname + " is out of form!");
+		modify($pl) { setPlayerForm( PlayerForm.OUT_OF_FORM ); }
 end

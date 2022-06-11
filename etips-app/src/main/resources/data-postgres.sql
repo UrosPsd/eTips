@@ -48,6 +48,6 @@ insert into game (date_played, player_id, played, points, opposing_club_id, cour
 -- Nikola Vucevic out of form and injury simulation
 insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-05-01T19:20:01.467245', 8, true, 50, 1, 'AWAY_COURT', 'REGULAR', 1);
 insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-01T19:20:01.467245', 8, true, 2, 1, 'AWAY_COURT', 'REGULAR', 1);
-insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-04T18:34:18.375283', 8, false, 0, 1, 'AWAY_COURT', 'REGULAR', 1);
-insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-03T18:34:34.138306', 8, false, 0, 2, 'HOME_COURT', 'REGULAR', 2);
-insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-02T18:34:43.261558', 8, false, 0, 3, 'HOME_COURT', 'REGULAR', 3);
+insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-06T18:34:18.375283', 8, false, 0, 1, 'AWAY_COURT', 'REGULAR', 1);
+insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-07T18:34:34.138306', 8, false, 0, 2, 'HOME_COURT', 'REGULAR', 2);
+insert into game (date_played, player_id, played, points, opposing_club_id, court_type, season_part, score_id) values ('2022-06-08T18:34:43.261558', 8, false, 0, 3, 'HOME_COURT', 'REGULAR', 3);

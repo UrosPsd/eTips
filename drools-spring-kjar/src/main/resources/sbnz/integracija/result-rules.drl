@@ -27,30 +27,33 @@ rule "rule-one"
 end
 
 rule "rule-two"
+	salience -100
 	when
 		$i: InputState(
+			$pl: player,
 			resultState == ResultState.NA,
-			formCalculated == true,
-			$pointsBet: averagePointsBet,
-			player.playerForm == PlayerForm.EXTREMELY_OUT_OF_FORM,
-			opposingClub.clubDefense ==  ClubDefense.EXCELENT_DEFENSE,
+			$c: opposingClub,
 			courtType == CourtType.AWAY_COURT
 		)
+		$cl: Club( id == $c.getId(), clubDefense == ClubDefense.EXCELENT_DEFENSE )
+		$p: Player( id == $pl.getId(), playerForm == PlayerForm.EXTREMELY_OUT_OF_FORM )
 	then
 		System.out.println("Siguran minus");
-		modify($i) { setResultState(ResultState.MINUS); }
+		//modify($i) { setResultState(ResultState.MINUS); }
 end
 
 rule "rule3"
+	salience -100
 	when
 		$i: InputState(
 			resultState == ResultState.NA,
-			formCalculated == true,
 			$pointsBet: averagePointsBet,
-			player.playerForm == PlayerForm.IN_FORM,
-			opposingClub.clubDefense ==  ClubDefense.BAD_DEFENSE,
+			$pl: player,
+			$c: opposingClub,
 			courtType == CourtType.HOME_COURT
 		)
+		$cl: Club( id == $c.getId(), clubDefense == ClubDefense.BAD_DEFENSE )
+		$p: Player( id == $pl.getId(), playerForm == PlayerForm.IN_FORM )
 	then
 		System.out.println("Lagani plus");
 		modify($i) { setResultState(ResultState.PLUS); }

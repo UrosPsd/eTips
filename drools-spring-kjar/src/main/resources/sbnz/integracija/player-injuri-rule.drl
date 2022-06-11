@@ -3,12 +3,14 @@ package com.etips;
 import com.etips.models.Player;
 import com.etips.models.InputState;
 import com.etips.models.Game;
+import com.etips.models.enums.ResultState;
 import java.time.LocalDateTime;
 import java.util.List;
 
 rule "Player was injured"
 	when
-		$i: InputState( formCalculated == false, $p: player, $games: player.gamesPlayed, $name: player.name, $surname: player.surname )
+		$i: InputState( $p: player, formCalculated == false, $games: player.gamesPlayed, resultState == ResultState.NA )
+		$pl: Player( id == $p.getId(), $name: name, $surname: surname )
 		Number(intValue >= 2) from accumulate(
 			Game(
 				date.isAfter(LocalDateTime.now().minusDays(10)),
@@ -18,5 +20,5 @@ rule "Player was injured"
 		)
 	then
 		System.out.println($name + " " + $surname + " is injured.");
-		modify($i) { setPlayerInjury(true); }
+		modify($pl) { setInjury(true); }
 end

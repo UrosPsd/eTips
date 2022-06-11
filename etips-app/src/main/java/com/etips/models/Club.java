@@ -46,6 +46,8 @@ public class Club implements Serializable {
         this.clubDefense = ClubDefense.NA;
     }
 
+
+
     public String getName() {
         return name;
     }
