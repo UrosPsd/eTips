@@ -116,7 +116,7 @@ const HomePage = () => {
             onChange={(e) => setSeasonPart(e.target.value)}
           >
             <option value="REGULAR">Regular Part</option>
-            <option value="PLAY_OFF">Play off</option>
+            <option value="PLAYOFF">Play off</option>
           </select>
 
           <label htmlFor="ppg">PPG</label>
