@@ -82,6 +82,10 @@ public class InputStateService  {
         List<TemplateModel> data = new ArrayList<TemplateModel>();
 
         data.add(new TemplateModel(ResultState.NA, true, PlayerForm.EXTREMELY_OUT_OF_FORM, ClubDefense.EXCELENT_DEFENSE, CourtType.AWAY_COURT, ResultState.MINUS));
+        data.add(new TemplateModel(ResultState.NA, true, PlayerForm.EXTREMELY_OUT_OF_FORM, ClubDefense.EXCELENT_DEFENSE, CourtType.HOME_COURT, ResultState.MINUS));
+        data.add(new TemplateModel(ResultState.NA, true, PlayerForm.OUT_OF_FORM, ClubDefense.EXCELENT_DEFENSE, CourtType.AWAY_COURT, ResultState.MINUS));
+        data.add(new TemplateModel(ResultState.NA, true, PlayerForm.OUT_OF_FORM, ClubDefense.EXCELENT_DEFENSE, CourtType.HOME_COURT, ResultState.MINUS));
+        data.add(new TemplateModel(ResultState.NA, true, PlayerForm.OUT_OF_FORM, ClubDefense.GOOD_DEFENSE, CourtType.AWAY_COURT, ResultState.MINUS));
         data.add(new TemplateModel(ResultState.NA, true, PlayerForm.IN_FORM, ClubDefense.BAD_DEFENSE, CourtType.HOME_COURT, ResultState.PLUS));
 
         ObjectDataCompiler converter = new ObjectDataCompiler();

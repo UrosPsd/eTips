@@ -71,6 +71,7 @@ rule "winner same"
 		$i: ChampionsInput($c:bestClub, bestPlayer != null, bestClub == bestPlayer.club)
 	then
 		System.out.println("Club " + $c.getName() + " will win!!!");	
+		modify($i){ setOut("Club " + $c.getName() + " will win!!!")}
 end
 
 rule "winner final"
@@ -78,5 +79,7 @@ rule "winner final"
 	when
 		$i: ChampionsInput($c:bestClub, bestPlayer != null, bestClub != bestPlayer.club)
 	then
-		System.out.println("Club " + $c.getName() + " will be in final!!!");	
+		System.out.println("Club " + $c.getName() + " will be in final!!!");
+		modify($i){ setOut("Club " + $c.getName() + " will be in final!!!")}
+			
 end

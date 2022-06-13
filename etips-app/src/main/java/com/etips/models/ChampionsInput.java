@@ -6,6 +6,15 @@ public class ChampionsInput {
     private String champion;
     private Club bestClub;
     private Player bestPlayer;
+    private String out;
+
+    public String getOut() {
+        return out;
+    }
+
+    public void setOut(String out) {
+        this.out = out;
+    }
 
     public ChampionsInput() {}
 

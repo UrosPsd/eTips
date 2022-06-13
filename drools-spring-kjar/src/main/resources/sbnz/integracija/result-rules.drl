@@ -56,5 +56,5 @@ rule "rule3"
 		$p: Player( id == $pl.getId(), playerForm == PlayerForm.IN_FORM )
 	then
 		System.out.println("Lagani plus");
-		modify($i) { setResultState(ResultState.PLUS); }
+		//modify($i) { setResultState(ResultState.PLUS); }
 end

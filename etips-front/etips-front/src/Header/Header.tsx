@@ -19,8 +19,8 @@ const Header = () => {
           </Link>
         </li>
         <li>
-          <Link to="" className="a">
-            Games
+          <Link to="/champion" className="a">
+            Champion
           </Link>
         </li>
       </ul>

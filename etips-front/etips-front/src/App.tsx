@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./Header/Header";
 import HandicapPage from "./pages/HandicapPage/HandicapPage";
+import ChampionPage from "./pages/ChampionPage/ChampionPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/handicap" component={HandicapPage} />
+        <Route path="/champion" component={ChampionPage} />
       </Switch>
     </BrowserRouter>
   );
