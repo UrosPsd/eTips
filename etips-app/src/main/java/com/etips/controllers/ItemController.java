@@ -1,6 +1,7 @@
 package com.etips.controllers;
 
 import com.etips.models.Item;
+import com.etips.models.QueryResults;
 import com.etips.services.ItemService;
 import com.etips.services.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/classify-item", method = RequestMethod.GET, produces = "application/json")
-    public String getQuestions() {
-        queryService.getResult();
-        return null;
+    public QueryResults getQuestions() {
+        QueryResults q = new QueryResults();
+        QueryResults qr = queryService.getResult(q);
+        return qr;
     }
 }

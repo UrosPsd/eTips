@@ -5,7 +5,7 @@ package com.etips
 import com.etips.models.Game;
 import com.etips.models.Player;
 import com.etips.models.Club;
-
+import com.etips.models.QueryResults;
 
 
 //declare any global variables here
@@ -14,12 +14,13 @@ import com.etips.models.Club;
 
 
 rule "average points forall"
-
+	no-loop
     when
-        String(this=="average")
+        $q: QueryResults()
         AveragePoints(name, surname, club, $avg;)
     then
         System.out.println(name + " " + surname + " vs club " + club + " has average of " + $avg);
+        modify($q){addResult(name + " " + surname + " vs club " + club + " has average of " + $avg)}
 
 end
 

@@ -1,9 +1,6 @@
 package com.etips.services;
 
-import com.etips.models.Club;
-import com.etips.models.Game;
-import com.etips.models.InputState;
-import com.etips.models.Player;
+import com.etips.models.*;
 import com.etips.repositories.ClubRepository;
 import com.etips.repositories.GameRepository;
 import com.etips.repositories.PlayerRepository;
@@ -30,7 +27,7 @@ public class QueryService {
         this.kieContainer = kieContainer;
     }
 
-    public String getResult() {
+    public QueryResults getResult(QueryResults q) {
         KieSession kieSession = kieContainer.newKieSession();
         for (Game g: gameRepository.findAll()) {
             kieSession.insert(g);
@@ -41,10 +38,10 @@ public class QueryService {
         for (Club c: clubRepository.findAll()) {
             kieSession.insert(c);
         }
-        kieSession.insert("average");
+        kieSession.insert(q);
         kieSession.fireAllRules();
         kieSession.dispose();
-        return null;
+        return q;
     }
 
 }
