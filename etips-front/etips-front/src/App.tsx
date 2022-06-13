@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import Header from "./Header/Header";
 import HandicapPage from "./pages/HandicapPage/HandicapPage";
 import ChampionPage from "./pages/ChampionPage/ChampionPage";
+import QueryPage from "./pages/QueryPage/QueryPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/handicap" component={HandicapPage} />
         <Route path="/champion" component={ChampionPage} />
+        <Route path="/query" component={QueryPage} />
       </Switch>
     </BrowserRouter>
   );

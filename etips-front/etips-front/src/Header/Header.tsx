@@ -23,6 +23,11 @@ const Header = () => {
             Champion
           </Link>
         </li>
+        <li>
+          <Link to="/query" className="a">
+            Query
+          </Link>
+        </li>
       </ul>
     </div>
   );
