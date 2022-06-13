@@ -37,7 +37,7 @@ public class TemplateService {
     }
 
     public void generateTemplate() throws FileNotFoundException {
-        InputStream template = new FileInputStream("../drools-spring-kjar/src/main/resources/sbnz/integracija/result-template.drt");
+        InputStream template = new FileInputStream("drools-spring-kjar/src/main/resources/sbnz/integracija/result-template.drt");
 
         List<TemplateModel> data = new ArrayList<TemplateModel>();
 
